@@ -5,6 +5,8 @@ from tkinter import font
 
 showStatusbar=True
 showToolbar=True
+fontFamily="Arial"
+fontSize=12
 
 # Class for main menu
 class MainMenu(Menu):
@@ -25,8 +27,6 @@ class MainMenu(Menu):
         self.file.add_command(label='Save', image=self.save_icon, compound=LEFT, accelerator="Ctrl+S")
         self.file.add_command(label='Save as', accelerator="Ctrl+Alt+S")
         self.file.add_command(label='Exit', image=self.exit_icon, compound=LEFT) # accelerator="Ctrl+O"
-
-
 
         ############## Edit Menu #################
         self.edit=Menu(self, tearoff=0)
@@ -156,6 +156,12 @@ class ToolBar(Label):
         self.cbFontSize.config(values=fontSizeList)
         self.cbFontSize.current(4)
 
+        # Create a binding function for font combo box
+        self.cbFont.bind(sequence="<<ComboboxSelected>>", func=self.parent.getFont)
+
+        # Create a binding function for font size combo box
+        self.cbFontSize.bind(sequence="<<ComboboxSelected>>", func=self.parent.getFontSize)
+
 
 
 # Class for main application
@@ -184,7 +190,19 @@ class MainApplication(Frame):
         # Parent Menu Configuration
         self.parent.config(menu=self.main_menu)
 
-        #
+    # Function - To get font
+    def getFont(self, *args):
+        global fontFamily
+        fontFamily = self.toolbar.cbFont.get()
+        self.TextEditor.configure(font=(fontFamily, fontSize))
+        # print('Font family - ', fontFamily)
+
+    # Function - To get font size
+    def getFontSize(self, *args):
+        global fontSize
+        fontSize = self.toolbar.cbFontSize.get()
+        self.TextEditor.configure(font=(fontFamily, fontSize))
+        # print('Font Size - ', fontSize)
 
 
 
