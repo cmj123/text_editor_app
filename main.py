@@ -106,7 +106,7 @@ class ToolBar(Label):
 
         ################################################################
         self.boldIcon = PhotoImage(file='icons/bold.png')
-        btnBold = Button(self, image=self.boldIcon)
+        btnBold = Button(self, image=self.boldIcon, command=self.parent.changeBold)
         btnBold.pack(side=LEFT, padx=5)
 
         ################################################################
@@ -204,6 +204,15 @@ class MainApplication(Frame):
         self.TextEditor.configure(font=(fontFamily, fontSize))
         # print('Font Size - ', fontSize)
 
+    # Function - Make text bold
+    def changeBold(self, *args):
+        text_pro = font.Font(font=self.TextEditor['font'])
+        print(text_pro.actual()['weight'])
+
+        if text_pro.actual()['weight'] == 'normal':
+            self.TextEditor.configure(font=(fontFamily, fontSize, 'bold'))
+        elif text_pro.actual()['weight'] == 'bold':
+            self.TextEditor.configure(font= (fontFamily, fontSize, 'normal'))
 
 
 
