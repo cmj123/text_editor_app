@@ -111,7 +111,7 @@ class ToolBar(Label):
 
         ################################################################
         self.italicIcon = PhotoImage(file='icons/italic.png')
-        btnItalic = Button(self, image=self.italicIcon)
+        btnItalic = Button(self, image=self.italicIcon, command=self.parent.changeItalic)
         btnItalic.pack(side=LEFT, padx=5)
 
         ################################################################
@@ -214,6 +214,15 @@ class MainApplication(Frame):
         elif text_pro.actual()['weight'] == 'bold':
             self.TextEditor.configure(font= (fontFamily, fontSize, 'normal'))
 
+    # Function - Make Italic
+    def changeItalic(self, *args):
+        text_pro = font.Font(font=self.TextEditor['font'])
+        print(text_pro.actual())
+
+        if text_pro.actual()['slant'] == 'roman':
+            self.TextEditor.configure(font=(fontFamily, fontSize, 'italic'))
+        elif text_pro.actual()['slant'] == 'italic':
+            self.TextEditor.configure(font= (fontFamily, fontSize, 'roman'))
 
 
 
