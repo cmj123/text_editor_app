@@ -2,6 +2,7 @@
 from tkinter import *
 from tkinter import ttk
 from tkinter import font
+from tkinter import colorchooser
 
 showStatusbar=True
 showToolbar=True
@@ -116,12 +117,12 @@ class ToolBar(Label):
 
         ################################################################
         self.underlineIcon = PhotoImage(file='icons/under_line.png')
-        btnUnderline = Button(self, image=self.underlineIcon)
+        btnUnderline = Button(self, image=self.underlineIcon, command=self.parent.changeUnderline)
         btnUnderline.pack(side=LEFT, padx=5)
 
         ################################################################
         self.fontcolorIcon = PhotoImage(file='icons/color.png')
-        btnfontColor = Button(self, image=self.fontcolorIcon)
+        btnfontColor = Button(self, image=self.fontcolorIcon, command=self.parent.changeFontColor)
         btnfontColor.pack(side=LEFT, padx=5)
 
         ################################################################
@@ -223,6 +224,22 @@ class MainApplication(Frame):
             self.TextEditor.configure(font=(fontFamily, fontSize, 'italic'))
         elif text_pro.actual()['slant'] == 'italic':
             self.TextEditor.configure(font= (fontFamily, fontSize, 'roman'))
+
+    # Function - Make Underline
+    def changeUnderline(self, *args):
+        text_pro = font.Font(font=self.TextEditor['font'])
+        print(text_pro.actual())
+
+        if text_pro.actual()['underline'] == 0:
+            self.TextEditor.configure(font=(fontFamily, fontSize, 'underline'))
+        elif text_pro.actual()['underline'] == 1:
+            self.TextEditor.configure(font= (fontFamily, fontSize, 'normal'))
+
+    # Function - Change Font Color
+    def changeFontColor(self, *args):
+        color = colorchooser.askcolor()
+        print(color)
+        self.TextEditor.configure(fg=color[1])
 
 
 
