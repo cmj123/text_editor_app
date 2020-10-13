@@ -127,17 +127,17 @@ class ToolBar(Label):
 
         ################################################################
         self.alignLeftIcon = PhotoImage(file='icons/alignleft.png')
-        btnalignLeft = Button(self, image=self.alignLeftIcon)
+        btnalignLeft = Button(self, image=self.alignLeftIcon, command=self.parent.alignLeft)
         btnalignLeft.pack(side=LEFT, padx=5)
 
         ################################################################
         self.alignCenterIcon = PhotoImage(file='icons/aligncenter.png')
-        btnalignCenter = Button(self, image=self.alignCenterIcon)
+        btnalignCenter = Button(self, image=self.alignCenterIcon, command=self.parent.alignCenter)
         btnalignCenter.pack(side=LEFT, padx=5)
 
         ################################################################
         self.alignRightIcon = PhotoImage(file='icons/alignright.png')
-        btnalignRight = Button(self, image=self.alignRightIcon)
+        btnalignRight = Button(self, image=self.alignRightIcon, command=self.parent.alignRight)
         btnalignRight.pack(side=LEFT, padx=5)
 
         ################################################################
@@ -240,6 +240,28 @@ class MainApplication(Frame):
         color = colorchooser.askcolor()
         print(color)
         self.TextEditor.configure(fg=color[1])
+
+    # Function - align left
+    def alignLeft(self, *args):
+        content = self.TextEditor.get(1.0, 'end')
+        self.TextEditor.tag_config('left',justify=LEFT)
+        self.TextEditor.delete(1.0, END)
+        self.TextEditor.insert(INSERT, content, 'left')
+
+    ## Function - align center
+    def alignCenter(self, *args):
+        content = self.TextEditor.get(1.0, 'end')
+        self.TextEditor.tag_config('center',justify=CENTER)
+        self.TextEditor.delete(1.0, END)
+        self.TextEditor.insert(INSERT, content, 'center')
+
+    ## Function - align right
+    def alignRight(self, *args):
+        content = self.TextEditor.get(1.0, 'end')
+        self.TextEditor.tag_config('right',justify=RIGHT)
+        self.TextEditor.delete(1.0, END)
+        self.TextEditor.insert(INSERT, content, 'right')
+
 
 
 
