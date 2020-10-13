@@ -8,6 +8,7 @@ showStatusbar=True
 showToolbar=True
 fontFamily="Arial"
 fontSize=12
+textChanged = False
 
 # Class for main menu
 class MainMenu(Menu):
@@ -186,10 +187,27 @@ class MainApplication(Frame):
         # Create an instance of status bar
         self.statusbar = StatusBar(self)
 
-
-
         # Parent Menu Configuration
         self.parent.config(menu=self.main_menu)
+
+        # Initialise font family and font size
+        self.TextEditor.configure(font=('Arial 12'))
+
+        # Binding function for text changed
+        self.TextEditor.bind('<<Modified>>', self.changed)
+
+    # Function - Text changed
+    def changed(self, *args):
+        global textChanged
+        flag = self.TextEditor.edit_modified()
+        textChanged = True
+        print(flag)
+        if flag:
+            words=len(self.TextEditor.get(1.0, 'end-1c').split())
+            letters=len(self.TextEditor.get(1.0, 'end-1c'))
+            self.statusbar.config(text="Characters "+str(letters)+ " Words: " + str(words))
+
+        self.TextEditor.edit_modified(False)
 
     # Function - To get font
     def getFont(self, *args):
