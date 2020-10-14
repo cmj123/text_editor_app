@@ -3,6 +3,7 @@ from tkinter import *
 from tkinter import ttk
 from tkinter import font
 from tkinter import colorchooser
+from tkinter import filedialog
 
 showStatusbar=True
 showToolbar=True
@@ -26,7 +27,7 @@ class MainMenu(Menu):
 
         self.file = Menu(self, tearoff=0)
         self.file.add_command(label='New', image=self.new_icon, compound=LEFT, accelerator="Ctrl+N", command=self.parent.newFile) #
-        self.file.add_command(label='Open', image=self.open_icon, compound=LEFT, accelerator="Ctrl+O") #
+        self.file.add_command(label='Open', image=self.open_icon, compound=LEFT, accelerator="Ctrl+O", command=self.parent.openFile) #
         self.file.add_command(label='Save', image=self.save_icon, compound=LEFT, accelerator="Ctrl+S")
         self.file.add_command(label='Save as', accelerator="Ctrl+Alt+S")
         self.file.add_command(label='Exit', image=self.exit_icon, compound=LEFT) # accelerator="Ctrl+O"
@@ -197,6 +198,18 @@ class MainApplication(Frame):
         # Binding function for text changed
         self.TextEditor.bind('<<Modified>>', self.changed)
 
+    # Function - open file
+    def openFile(self, *args):
+        global url
+        url = filedialog.askopenfilename(initialdir="/", title="Select a file to open",
+                                         filetypes=(("Text file", '*.txt'),("All Files", "*.*")))
+        try:
+            with open(url, 'r') as file:
+                self.TextEditor.delete(1.0, END)
+                self.TextEditor.insert('1.0', file.read())
+        except:
+            pass
+
     # Function - new file
     def newFile(self, *args):
         global url
@@ -204,14 +217,20 @@ class MainApplication(Frame):
             url=""
             self.TextEditor.delete(1.0, END)
         except:
-            pass
+            return
+
+        # Change title
+        self.parent.title("Notepad - Now Editing" + str(url.split('/')[-1]))
+
+
+
 
     # Function - Text changed
     def changed(self, *args):
         global textChanged
         flag = self.TextEditor.edit_modified()
         textChanged = True
-        print(flag)
+        # print(flag)
         if flag:
             words=len(self.TextEditor.get(1.0, 'end-1c').split())
             letters=len(self.TextEditor.get(1.0, 'end-1c'))
