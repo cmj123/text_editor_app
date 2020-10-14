@@ -9,6 +9,7 @@ showToolbar=True
 fontFamily="Arial"
 fontSize=12
 textChanged = False
+url = ""
 
 # Class for main menu
 class MainMenu(Menu):
@@ -24,7 +25,7 @@ class MainMenu(Menu):
 
 
         self.file = Menu(self, tearoff=0)
-        self.file.add_command(label='New', image=self.new_icon, compound=LEFT, accelerator="Ctrl+N") #
+        self.file.add_command(label='New', image=self.new_icon, compound=LEFT, accelerator="Ctrl+N", command=self.parent.newFile) #
         self.file.add_command(label='Open', image=self.open_icon, compound=LEFT, accelerator="Ctrl+O") #
         self.file.add_command(label='Save', image=self.save_icon, compound=LEFT, accelerator="Ctrl+S")
         self.file.add_command(label='Save as', accelerator="Ctrl+Alt+S")
@@ -195,6 +196,15 @@ class MainApplication(Frame):
 
         # Binding function for text changed
         self.TextEditor.bind('<<Modified>>', self.changed)
+
+    # Function - new file
+    def newFile(self, *args):
+        global url
+        try:
+            url=""
+            self.TextEditor.delete(1.0, END)
+        except:
+            pass
 
     # Function - Text changed
     def changed(self, *args):
