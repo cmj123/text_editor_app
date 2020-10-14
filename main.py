@@ -28,7 +28,9 @@ class MainMenu(Menu):
         self.file = Menu(self, tearoff=0)
         self.file.add_command(label='New', image=self.new_icon, compound=LEFT, accelerator="Ctrl+N", command=self.parent.newFile) #
         self.file.add_command(label='Open', image=self.open_icon, compound=LEFT, accelerator="Ctrl+O", command=self.parent.openFile) #
-        self.file.add_command(label='Save', image=self.save_icon, compound=LEFT, accelerator="Ctrl+S")
+        self.file.add_command(label='Save', image=self.save_icon, compound=LEFT, accelerator="Ctrl+S",
+                              command=self.parent.saveFile)
+
         self.file.add_command(label='Save as', accelerator="Ctrl+Alt+S")
         self.file.add_command(label='Exit', image=self.exit_icon, compound=LEFT) # accelerator="Ctrl+O"
 
@@ -197,6 +199,23 @@ class MainApplication(Frame):
 
         # Binding function for text changed
         self.TextEditor.bind('<<Modified>>', self.changed)
+
+    # Function - save file
+    def saveFile(self, *args):
+        global url
+        try:
+            if url != "":
+                content = str(self.TextEditor.get(1.0, END))
+                with open(url, 'w', encoding='utf-8') as file:
+                    file.write(content)
+            else:
+                url = filedialog.asksaveasfile(mode='w', defaultextension=".txt",
+                                                   filetypes=(("Text file", "*.txt"), ("All files", "*.*")))
+                content2 = str(self.TextEditor.get(1.0, END))
+                url.write(content2)
+                url.close()
+        except:
+            pass
 
     # Function - open file
     def openFile(self, *args):
