@@ -31,7 +31,7 @@ class MainMenu(Menu):
         self.file.add_command(label='Save', image=self.save_icon, compound=LEFT, accelerator="Ctrl+S",
                               command=self.parent.saveFile)
 
-        self.file.add_command(label='Save as', accelerator="Ctrl+Alt+S")
+        self.file.add_command(label='Save as', accelerator="Ctrl+Alt+S", command=self.parent.saveAsFile)
         self.file.add_command(label='Exit', image=self.exit_icon, compound=LEFT) # accelerator="Ctrl+O"
 
         ############## Edit Menu #################
@@ -199,6 +199,18 @@ class MainApplication(Frame):
 
         # Binding function for text changed
         self.TextEditor.bind('<<Modified>>', self.changed)
+
+    # Function - Save As
+    def saveAsFile(self, *args):
+        try:
+            content = str(self.TextEditor.get(1.0, END))
+            url = filedialog.asksaveasfile(mode='w', defaultextension=".txt",
+                                               filetypes=(("Text file", "*.txt"), ("All files", "*.*")))
+            url.write(content)
+            url.close()
+            self.parent.title("NotePad - Now Editing" + str(url.split('/')[-1]))
+        except:
+            return
 
     # Function - save file
     def saveFile(self, *args):
