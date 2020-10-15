@@ -4,6 +4,7 @@ from tkinter import ttk
 from tkinter import font
 from tkinter import colorchooser
 from tkinter import filedialog
+from tkinter import messagebox
 
 showStatusbar=True
 showToolbar=True
@@ -32,7 +33,7 @@ class MainMenu(Menu):
                               command=self.parent.saveFile)
 
         self.file.add_command(label='Save as', accelerator="Ctrl+Alt+S", command=self.parent.saveAsFile)
-        self.file.add_command(label='Exit', image=self.exit_icon, compound=LEFT) # accelerator="Ctrl+O"
+        self.file.add_command(label='Exit', image=self.exit_icon, compound=LEFT, command=self.parent.exitFunc) # accelerator="Ctrl+O"
 
         ############## Edit Menu #################
         self.edit=Menu(self, tearoff=0)
@@ -199,6 +200,36 @@ class MainApplication(Frame):
 
         # Binding function for text changed
         self.TextEditor.bind('<<Modified>>', self.changed)
+
+    # Function - Exit Function
+    def exitFunc(self, *args):
+        global url, textChanged
+
+
+        try:
+            if textChanged == True:
+                mbox = messagebox.askyesnocancel("Warning", "Do you want to save the file?")
+
+                # Option 01 - Exit whilst a file is open
+                if mbox is True:
+                    if url != "":
+                        content=self.TextEditor.get(1.0, END)
+                        with open(url, 'w', encoding='utf-8') as file:
+                            file.write(content)
+                            self.parent.destroy()
+                    else:
+                        content2=str(self.TextEditor.get(1.0, END))
+                        url = filedialog.asksaveasfile(mode='w', defaultextension=".txt",
+                                                           filetypes=(("Text file", "*.txt"), ("All files", "*.*")))
+                        url.write(content)
+                        url.close()
+
+                if mbox is False:
+                    self.parent.destroy()
+            else:
+                self.parent.destroy()
+        except:
+            return
 
     # Function - Save As
     def saveAsFile(self, *args):
