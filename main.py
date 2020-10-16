@@ -64,13 +64,25 @@ class MainMenu(Menu):
 
         self.theme_choice=StringVar()
         for i in sorted(self.color_list):
-            self.themes.add_radiobutton(label=i, variable=self.theme_choice)
+            self.themes.add_radiobutton(label=i, variable=self.theme_choice, command=self.changeTheme)
 
         #### Create Menu
         self.add_cascade(label='File', menu=self.file)
         self.add_cascade(label='Edit', menu=self.edit)
         self.add_cascade(label='View', menu=self.view)
         self.add_cascade(label='Templates', menu=self.themes)
+
+        ############## About Menu #################
+        self.about = Menu(self, tearoff=0)
+        self.add_cascade(label="About", command=self.parent.aboutMessage)
+
+        ### Function - change theme
+    def changeTheme(self):
+        selected_theme = self.theme_choice.get()
+        fg_bg_color = self.color_list.get(selected_theme)
+        print(fg_bg_color)
+        foreground_color, background_color = fg_bg_color.split('.')
+        self.parent.TextEditor.config(background=background_color, fg=foreground_color)
 
 # Class for Text editor
 class TextEditor(Text):
@@ -200,6 +212,11 @@ class MainApplication(Frame):
 
         # Binding function for text changed
         self.TextEditor.bind('<<Modified>>', self.changed)
+
+    # Function - About Message
+    def aboutMessage(self, *args):
+        messagebox.showinfo("About",
+                            "This is our about page\nhave a question\ncontact us e.dijemeni@gmail.com")
 
     # Function - Exit Function
     def exitFunc(self, *args):
