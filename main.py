@@ -37,10 +37,10 @@ class MainMenu(Menu):
 
         ############## Edit Menu #################
         self.edit=Menu(self, tearoff=0)
-        self.edit.add_command(label='Copy',accelerator="Ctrl+C")
-        self.edit.add_command(label='Paste',accelerator="Ctrl+V")
-        self.edit.add_command(label='Cut',accelerator="Ctrl+X")
-        self.edit.add_command(label='Clear All',accelerator="Ctrl+Alt+C")
+        self.edit.add_command(label='Copy',accelerator="Ctrl+C", command=lambda:self.parent.TextEditor.event_generate("<<control c>>"))
+        self.edit.add_command(label='Paste',accelerator="Ctrl+V", command=lambda:self.parent.TextEditor.event_generate("<<control v>>"))
+        self.edit.add_command(label='Cut',accelerator="Ctrl+X", command=lambda:self.parent.TextEditor.event_generate("<<control x>>"))
+        self.edit.add_command(label='Clear All',accelerator="Ctrl+Alt+C",command=lambda:self.parent.TextEditor.delete(1.0, END))
         self.edit.add_command(label='Find',accelerator="Ctrl+F")
 
         ############## View Menu #################
