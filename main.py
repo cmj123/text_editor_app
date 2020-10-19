@@ -13,6 +13,28 @@ fontSize=12
 textChanged = False
 url = ""
 
+# Class for Dialog
+class FindDialog(Toplevel):
+    def __init__(self, parent, *args, **kwargs):
+        Toplevel.__init__(self, parent, *args, **kwargs)
+        self.parent = parent
+        self.geometry("450x200+550+200")
+        self.title("Find")
+        self.resizable(False, False)
+        txtFind = Label(self, text="Find: ")
+        txtFind.place(x=20,y=20)
+        txtReplace = Label(self, text="Replace: ")
+        txtReplace.place(x=20, y=60)
+        self.findInput = Entry(self, width=30)
+        self.findInput.place(x=100, y=20)
+        self.replaceInput=Entry(self, width=30)
+        self.replaceInput.place(x=100, y=60)
+        self.btnFind=Button(self, text="Find")
+        self.btnFind.place(x=200, y=90)
+        self.btnReplace =  Button(self, text="Replace")
+        self.btnReplace.place(x=240, y=90)
+
+
 # Class for main menu
 class MainMenu(Menu):
     def __init__(self, parent, *args, **kwargs):
@@ -41,7 +63,7 @@ class MainMenu(Menu):
         self.edit.add_command(label='Paste',accelerator="Ctrl+V", command=lambda:self.parent.TextEditor.event_generate("<<control v>>"))
         self.edit.add_command(label='Cut',accelerator="Ctrl+X", command=lambda:self.parent.TextEditor.event_generate("<<control x>>"))
         self.edit.add_command(label='Clear All',accelerator="Ctrl+Alt+C",command=lambda:self.parent.TextEditor.delete(1.0, END))
-        self.edit.add_command(label='Find',accelerator="Ctrl+F")
+        self.edit.add_command(label='Find',accelerator="Ctrl+F", command=self.parent.find)
 
         ############## View Menu #################
         global showStatusbar
@@ -388,8 +410,9 @@ class MainApplication(Frame):
         self.TextEditor.delete(1.0, END)
         self.TextEditor.insert(INSERT, content, 'right')
 
-
-
+    ## Launch application
+    def find(self, *args):
+        self.find = FindDialog(parent=self)
 
 if __name__ == "__main__":
     root=Tk()
