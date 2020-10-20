@@ -29,9 +29,9 @@ class FindDialog(Toplevel):
         self.findInput.place(x=100, y=20)
         self.replaceInput=Entry(self, width=30)
         self.replaceInput.place(x=100, y=60)
-        self.btnFind=Button(self, text="Find")
+        self.btnFind=Button(self, text="Find", command=self.parent.findWords)
         self.btnFind.place(x=200, y=90)
-        self.btnReplace =  Button(self, text="Replace")
+        self.btnReplace =  Button(self, text="Replace", command=self.parent.replaceWords)
         self.btnReplace.place(x=240, y=90)
 
 
@@ -413,6 +413,35 @@ class MainApplication(Frame):
     ## Launch application
     def find(self, *args):
         self.find = FindDialog(parent=self)
+
+    ## Find Words
+    def findWords(self, *args):
+        word = self.find.findInput.get()
+        print(word)
+        self.TextEditor.tag_remove('match','1.0',END)
+
+        matches = 0
+        if word:
+            start_pos = '1.0'
+            while True:
+                start_pos = self.TextEditor.search(word, start_pos, stopindex=END)
+                if not start_pos:
+                    break
+
+                end_pos='{}+{}c'.format(start_pos, len(word))
+                self.TextEditor.tag_add('match', start_pos, end_pos)
+                matches += 1
+                start_pos = end_pos
+                self.TextEditor.tag_config('match', foreground='red', background='yellow')
+
+    ## Replace Words
+    def replaceWords(self, *args):
+        replaceText = self.find.replaceInput.get()
+        word=self.find.findInput.get()
+        content=self.TextEditor.get(1.0, END)
+        newValue = content.replace(word, replaceText)
+        self.TextEditor.delete(1.0, END)
+        self.TextEditor.insert(1.0, newValue)
 
 if __name__ == "__main__":
     root=Tk()
