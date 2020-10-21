@@ -1,3 +1,5 @@
+# Completed V/T0
+# Started accountability chart and analysis
 # Import key libraries
 from tkinter import *
 from tkinter import ttk
