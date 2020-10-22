@@ -1,5 +1,6 @@
 # Completed V/T0
-# Started accountability chart and analysis
+# Completed accountability chart and analysis
+# Started people analyzer
 # Import key libraries
 from tkinter import *
 from tkinter import ttk
