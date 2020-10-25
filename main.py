@@ -3,6 +3,9 @@
 # Started people analyzer
 # Import key libraries
 # Nleru Hackday
+# Gap analysis analysis with Dike
+# Issue list with Dike
+
 from tkinter import *
 from tkinter import ttk
 from tkinter import font
