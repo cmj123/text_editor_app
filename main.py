@@ -1,11 +1,4 @@
-# Completed V/T0
-# Completed accountability chart and analysis
-# Started people analyzer
 # Import key libraries
-# Nleru Hackday
-# Gap analysis analysis with Dike
-# Issue list with Dike
-
 from tkinter import *
 from tkinter import ttk
 from tkinter import font
@@ -76,8 +69,10 @@ class MainMenu(Menu):
         global showStatusbar
         global showToolbar
         self.view=Menu(self, tearoff=0)
-        self.view.add_checkbutton(onvalue=True, offvalue=False, label="Tool Bar", variable=showToolbar)
-        self.view.add_checkbutton(onvalue=True, offvalue=False, label="Status Bar", variable=showStatusbar)
+        self.view.add_checkbutton(onvalue=True, offvalue=False, label="Tool Bar", variable=showToolbar,
+                                  command=self.parent.hideToolbar)
+        self.view.add_checkbutton(onvalue=True, offvalue=False, label="Status Bar", variable=showStatusbar,
+                                  command=self.parent.hideStatusbar)
 
         ############## Theme Menu #################
         self.themes=Menu(self, tearoff=0)
@@ -455,6 +450,31 @@ class MainApplication(Frame):
         newValue = content.replace(word, replaceText)
         self.TextEditor.delete(1.0, END)
         self.TextEditor.insert(1.0, newValue)
+
+    ## Hide Status Bar
+    def hideStatusbar(self, *args):
+        global showStatusbar
+
+        if showStatusbar:
+            self.statusbar.pack_forget()
+            showStatusbar=False
+        else:
+            self.statusbar.pack(side=BOTTOM, fill=X)
+            showStatusbar=True
+
+    ## Hide Toolbar
+    def hideToolbar(self, *args):
+        global showToolbar
+        if showToolbar:
+            self.toolbar.pack_forget()
+            showToolbar = False
+        else:
+            self.TextEditor.pack_forget()
+            self.statusbar.pack_forget()
+            self.toolbar.pack(side=TOP, fill=X)
+            self.TextEditor.pack(expand=YES, fill=BOTH)
+            self.statusbar.pack(side=BOTTOM)
+            showToolbar = True
 
 if __name__ == "__main__":
     root=Tk()
