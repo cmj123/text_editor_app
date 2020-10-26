@@ -121,12 +121,18 @@ class TextEditor(Text):
         self.config(wrap='word')
         self.pack(expand=YES, fill=BOTH)
         self.config(relief=FLAT)
-        xscrollbar=Scrollbar(self, orient=HORIZONTAL)
-        xscrollbar.pack(side=BOTTOM, fill=X)
-        yscrollbar=Scrollbar(self, orient=VERTICAL)
-        yscrollbar.pack(side=RIGHT, fill=Y)
-        xscrollbar.config(command=self.xview)
-        yscrollbar.config(command=self.yview)
+        # xscrollbar=Scrollbar(self, orient=HORIZONTAL)
+        # xscrollbar.pack(side=BOTTOM, fill=X)
+        # yscrollbar=Scrollbar(self, orient=VERTICAL)
+        # yscrollbar.pack(side=RIGHT, fill=Y)
+        # xscrollbar.config(command=self.xview)
+        # yscrollbar.config(command=self.yview)
+
+        # Scrollbar
+        scroll_bar = Scrollbar(self, bd=5, relief=SUNKEN)
+        self.configure(yscrollcommand=scroll_bar.set)
+        scroll_bar.config(command=self.yview)
+        scroll_bar.pack(side=RIGHT, fill=Y)
 
 # Class for status bar
 class StatusBar(Label):
